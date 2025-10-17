@@ -1,0 +1,10 @@
+{{ define "text_ad" }}
+<div class="container py-3 px-lg-5 py-lg-5" style="background: transparent !important;">
+    <div role="alert" class="ad-banner" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(139, 92, 246, 0.1)) !important; padding: 20px; border-radius: 12px; border: 1px solid rgba(245, 158, 11, 0.3); text-align: center;">
+        <strong style="color: #F59E0B !important; font-size: 14px; margin-right: 10px;">Ad</strong>
+        <a href="{{.ad.RedirectUrl}}" rel="nofollow noopener noreferrer" target="_blank" style="color: #60A5FA !important; text-decoration: underline !important; font-size: 18px; font-weight: 600;">
+            {{.ad.Text}}
+        </a>
+    </div>
+</div>
+{{ end }}

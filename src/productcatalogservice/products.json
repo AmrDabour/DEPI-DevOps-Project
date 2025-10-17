@@ -1,0 +1,469 @@
+{
+    "products": [
+        {
+            "id": "3P9WFTR5VG",
+            "name": "Running Shoes",
+            "description": "Comfortable and lightweight running shoes perfect for your daily jog.",
+            "picture": "/static/img/products/running-shoes.jpg",
+            "priceUsd": {
+                "currencyCode": "USD",
+                "units": 79,
+                "nanos": 990000000
+            },
+            "categories": [
+                "footwear",
+                "sports"
+            ]
+        },
+        {
+            "id": "4H7BFKL2XQ",
+            "name": "Laptop Backpack",
+            "description": "Durable laptop backpack with multiple compartments for all your essentials.",
+            "picture": "/static/img/products/laptop-backpack.jpg",
+            "priceUsd": {
+                "currencyCode": "USD",
+                "units": 59,
+                "nanos": 990000000
+            },
+            "categories": [
+                "accessories",
+                "bags"
+            ]
+        },
+        {
+            "id": "8K2PLMNR4S",
+            "name": "Wireless Headphones",
+            "description": "Premium noise-cancelling wireless headphones with 30-hour battery life.",
+            "picture": "/static/img/products/wireless-headphones.jpg",
+            "priceUsd": {
+                "currencyCode": "USD",
+                "units": 149,
+                "nanos": 990000000
+            },
+            "categories": [
+                "electronics",
+                "audio"
+            ]
+        },
+        {
+            "id": "9M3QWERT5Y",
+            "name": "Smart Watch",
+            "description": "Feature-rich smart watch with fitness tracking and notifications.",
+            "picture": "/static/img/products/smart-watch.jpg",
+            "priceUsd": {
+                "currencyCode": "USD",
+                "units": 199,
+                "nanos": 990000000
+            },
+            "categories": [
+                "electronics",
+                "accessories"
+            ]
+        },
+        {
+            "id": "5Y6UTGH7J8",
+            "name": "Desk Organizer",
+            "description": "Bamboo desk organizer with multiple compartments for office supplies.",
+            "picture": "/static/img/products/desk-organizer.jpg",
+            "priceUsd": {
+                "currencyCode": "USD",
+                "units": 32,
+                "nanos": 990000000
+            },
+            "categories": [
+                "office",
+                "organization"
+            ]
+        },
+        {
+            "id": "9I0OPMJU8K",
+            "name": "Travel Mug",
+            "description": "Leak-proof travel mug with double-wall insulation.",
+            "picture": "/static/img/products/travel-mug.jpg",
+            "priceUsd": {
+                "currencyCode": "USD",
+                "units": 22,
+                "nanos": 990000000
+            },
+            "categories": [
+                "kitchen",
+                "travel"
+            ]
+        },
+        {
+            "id": "5T6YUIOP8A",
+            "name": "Coffee Maker",
+            "description": "Automatic coffee maker with programmable timer and thermal carafe.",
+            "picture": "/static/img/products/coffee-maker.jpg",
+            "priceUsd": {
+                "currencyCode": "USD",
+                "units": 89,
+                "nanos": 990000000
+            },
+            "categories": [
+                "kitchen",
+                "appliances"
+            ]
+        },
+        {
+            "id": "7D8FASDF2G",
+            "name": "Desk Lamp",
+            "description": "Modern LED desk lamp with adjustable brightness and color temperature.",
+            "picture": "/static/img/products/desk-lamp.jpg",
+            "priceUsd": {
+                "currencyCode": "USD",
+                "units": 39,
+                "nanos": 990000000
+            },
+            "categories": [
+                "home",
+                "lighting"
+            ]
+        },
+        {
+            "id": "2J4KZXCV9B",
+            "name": "Yoga Mat",
+            "description": "Non-slip yoga mat with extra cushioning for comfortable workouts.",
+            "picture": "/static/img/products/yoga-mat.jpg",
+            "priceUsd": {
+                "currencyCode": "USD",
+                "units": 34,
+                "nanos": 990000000
+            },
+            "categories": [
+                "sports",
+                "fitness"
+            ]
+        },
+        {
+            "id": "6N7BVCXZ3M",
+            "name": "Wall Clock",
+            "description": "Minimalist wall clock with silent mechanism and modern design.",
+            "picture": "/static/img/products/wall-clock.jpg",
+            "priceUsd": {
+                "currencyCode": "USD",
+                "units": 29,
+                "nanos": 990000000
+            },
+            "categories": [
+                "home",
+                "decor"
+            ]
+        },
+        {
+            "id": "1P2QWASZX4C",
+            "name": "Plant Pot",
+            "description": "Ceramic plant pot with drainage hole, perfect for indoor plants.",
+            "picture": "/static/img/products/plant-pot.jpg",
+            "priceUsd": {
+                "currencyCode": "USD",
+                "units": 24,
+                "nanos": 990000000
+            },
+            "categories": [
+                "home",
+                "garden"
+            ]
+        },
+        {
+            "id": "8R9TEDFG5V",
+            "name": "Water Bottle",
+            "description": "Insulated stainless steel water bottle keeps drinks cold for 24 hours.",
+            "picture": "/static/img/products/water-bottle.jpg",
+            "priceUsd": {
+                "currencyCode": "USD",
+                "units": 27,
+                "nanos": 990000000
+            },
+            "categories": [
+                "sports",
+                "accessories"
+            ]
+        },
+        {
+            "id": "3W4ERFVB6T",
+            "name": "Bluetooth Speaker",
+            "description": "Portable Bluetooth speaker with 360-degree sound and waterproof design.",
+            "picture": "/static/img/products/bluetooth-speaker.jpg",
+            "priceUsd": {
+                "currencyCode": "USD",
+                "units": 69,
+                "nanos": 990000000
+            },
+            "categories": [
+                "electronics",
+                "audio"
+            ]
+        },
+        {
+            "id": "7L8KNJM9B0",
+            "name": "Reading Glasses",
+            "description": "Stylish reading glasses with blue light filtering technology.",
+            "picture": "/static/img/products/reading-glasses.jpg",
+            "priceUsd": {
+                "currencyCode": "USD",
+                "units": 45,
+                "nanos": 990000000
+            },
+            "categories": [
+                "accessories",
+                "eyewear"
+            ]
+        },
+        {
+            "id": "4X5CVBN0M1",
+            "name": "Throw Pillow",
+            "description": "Soft velvet throw pillow with removable cover in multiple colors.",
+            "picture": "/static/img/products/throw-pillow.jpg",
+            "priceUsd": {
+                "currencyCode": "USD",
+                "units": 28,
+                "nanos": 990000000
+            },
+            "categories": [
+                "home",
+                "decor"
+            ]
+        },
+        {
+            "id": "A1B2C3D4E5",
+            "name": "Leather Wallet",
+            "description": "Premium leather wallet with RFID protection and multiple card slots.",
+            "picture": "/static/img/products/leather-wallet.jpg",
+            "priceUsd": {
+                "currencyCode": "USD",
+                "units": 49,
+                "nanos": 990000000
+            },
+            "categories": [
+                "accessories",
+                "wallet"
+            ]
+        },
+        {
+            "id": "F6G7H8I9J0",
+            "name": "Wireless Mouse",
+            "description": "Ergonomic wireless mouse with precision tracking and long battery life.",
+            "picture": "/static/img/products/wireless-mouse.jpg",
+            "priceUsd": {
+                "currencyCode": "USD",
+                "units": 35,
+                "nanos": 990000000
+            },
+            "categories": [
+                "electronics",
+                "computer"
+            ]
+        },
+        {
+            "id": "K1L2M3N4O5",
+            "name": "Notebook Set",
+            "description": "Set of 3 premium notebooks with dotted pages for journaling and sketching.",
+            "picture": "/static/img/products/notebook-set.jpg",
+            "priceUsd": {
+                "currencyCode": "USD",
+                "units": 18,
+                "nanos": 990000000
+            },
+            "categories": [
+                "office",
+                "stationery"
+            ]
+        },
+        {
+            "id": "P6Q7R8S9T0",
+            "name": "Canvas Tote Bag",
+            "description": "Eco-friendly canvas tote bag perfect for shopping and daily errands.",
+            "picture": "/static/img/products/tote-bag.jpg",
+            "priceUsd": {
+                "currencyCode": "USD",
+                "units": 25,
+                "nanos": 990000000
+            },
+            "categories": [
+                "accessories",
+                "bags"
+            ]
+        },
+        {
+            "id": "U1V2W3X4Y5",
+            "name": "Mechanical Keyboard",
+            "description": "RGB mechanical keyboard with customizable switches and backlighting.",
+            "picture": "/static/img/products/mechanical-keyboard.jpg",
+            "priceUsd": {
+                "currencyCode": "USD",
+                "units": 129,
+                "nanos": 990000000
+            },
+            "categories": [
+                "electronics",
+                "computer"
+            ]
+        },
+        {
+            "id": "Z6A7B8C9D0",
+            "name": "Desk Chair",
+            "description": "Ergonomic office chair with lumbar support and adjustable height.",
+            "picture": "/static/img/products/desk-chair.jpg",
+            "priceUsd": {
+                "currencyCode": "USD",
+                "units": 189,
+                "nanos": 990000000
+            },
+            "categories": [
+                "office",
+                "furniture"
+            ]
+        },
+        {
+            "id": "E1F2G3H4I5",
+            "name": "Phone Stand",
+            "description": "Adjustable aluminum phone stand compatible with all smartphones.",
+            "picture": "/static/img/products/phone-stand.jpg",
+            "priceUsd": {
+                "currencyCode": "USD",
+                "units": 19,
+                "nanos": 990000000
+            },
+            "categories": [
+                "electronics",
+                "accessories"
+            ]
+        },
+        {
+            "id": "J6K7L8M9N0",
+            "name": "Fitness Tracker",
+            "description": "Activity tracker with heart rate monitor and sleep tracking.",
+            "picture": "/static/img/products/fitness-tracker.jpg",
+            "priceUsd": {
+                "currencyCode": "USD",
+                "units": 79,
+                "nanos": 990000000
+            },
+            "categories": [
+                "electronics",
+                "fitness"
+            ]
+        },
+        {
+            "id": "O1P2Q3R4S5",
+            "name": "Essential Oil Diffuser",
+            "description": "Ultrasonic aromatherapy diffuser with LED lights and auto shut-off.",
+            "picture": "/static/img/products/oil-diffuser.jpg",
+            "priceUsd": {
+                "currencyCode": "USD",
+                "units": 36,
+                "nanos": 990000000
+            },
+            "categories": [
+                "home",
+                "wellness"
+            ]
+        },
+        {
+            "id": "T6U7V8W9X0",
+            "name": "Portable Charger",
+            "description": "20000mAh power bank with fast charging and dual USB ports.",
+            "picture": "/static/img/products/portable-charger.jpg",
+            "priceUsd": {
+                "currencyCode": "USD",
+                "units": 42,
+                "nanos": 990000000
+            },
+            "categories": [
+                "electronics",
+                "accessories"
+            ]
+        },
+        {
+            "id": "Y1Z2A3B4C5",
+            "name": "Sunglasses",
+            "description": "Polarized sunglasses with UV protection and stylish frame.",
+            "picture": "/static/img/products/sunglasses-new.jpg",
+            "priceUsd": {
+                "currencyCode": "USD",
+                "units": 54,
+                "nanos": 990000000
+            },
+            "categories": [
+                "accessories",
+                "eyewear"
+            ]
+        },
+        {
+            "id": "D6E7F8G9H0",
+            "name": "Wireless Earbuds",
+            "description": "True wireless earbuds with active noise cancellation and charging case.",
+            "picture": "/static/img/products/wireless-earbuds.jpg",
+            "priceUsd": {
+                "currencyCode": "USD",
+                "units": 89,
+                "nanos": 990000000
+            },
+            "categories": [
+                "electronics",
+                "audio"
+            ]
+        },
+        {
+            "id": "I1J2K3L4M5",
+            "name": "Standing Desk",
+            "description": "Electric height-adjustable standing desk with memory presets.",
+            "picture": "/static/img/products/standing-desk.jpg",
+            "priceUsd": {
+                "currencyCode": "USD",
+                "units": 349,
+                "nanos": 990000000
+            },
+            "categories": [
+                "office",
+                "furniture"
+            ]
+        },
+        {
+            "id": "N6O7P8Q9R0",
+            "name": "Gym Bag",
+            "description": "Spacious gym bag with separate shoe compartment and water bottle holder.",
+            "picture": "/static/img/products/gym-bag.jpg",
+            "priceUsd": {
+                "currencyCode": "USD",
+                "units": 44,
+                "nanos": 990000000
+            },
+            "categories": [
+                "sports",
+                "bags"
+            ]
+        },
+        {
+            "id": "S1T2U3V4W5",
+            "name": "Smart Bulb",
+            "description": "WiFi smart LED bulb with color changing and voice control.",
+            "picture": "/static/img/products/smart-bulb.jpg",
+            "priceUsd": {
+                "currencyCode": "USD",
+                "units": 26,
+                "nanos": 990000000
+            },
+            "categories": [
+                "home",
+                "smart"
+            ]
+        },
+        {
+            "id": "X6Y7Z8A9B0",
+            "name": "Laptop Stand",
+            "description": "Aluminum laptop stand with adjustable angle and cable management.",
+            "picture": "/static/img/products/laptop-stand.jpg",
+            "priceUsd": {
+                "currencyCode": "USD",
+                "units": 38,
+                "nanos": 990000000
+            },
+            "categories": [
+                "office",
+                "accessories"
+            ]
+        }
+    ]
+}

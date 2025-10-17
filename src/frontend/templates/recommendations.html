@@ -1,0 +1,27 @@
+{{ define "recommendations" }}
+<section class="recommendations">
+    <div class="container">
+      <div class="row">
+        <div class="col-xl-10 offset-xl-1">
+          <h2>You May Also Like</h2>
+          <div class="row">
+            {{ range .recommendations }}
+            <div class="col-md-3 mb-4">
+              <div class="glass-card" style="padding: 16px;">
+                <a href="{{ $.baseUrl }}/product/{{.Id}}">
+                  <img alt="" src="{{ $.baseUrl }}{{.Picture}}" style="border-radius: 16px; width: 100%;">
+                </a>
+                <div style="margin-top: 12px;">
+                  <h5>
+                    {{ .Name }}
+                  </h5>
+                </div>
+              </div>
+            </div>
+            {{ end }}
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+{{ end }}

@@ -1,0 +1,135 @@
+{{ define "home" }}
+
+{{ template "header" . }}
+<!-- Platform indicator removed for cleaner UI -->
+
+<!-- Modern Hero Section -->
+<section class="modern-hero">
+  <div class="hero-content">
+    <h1 class="hero-title animate-fadeInUp">Welcome to <span class="highlight">DEVOPS</span> Project Market</h1>
+    <p class="hero-subtitle animate-fadeInUp">Discover amazing products with modern shopping experience</p>
+  </div>
+</section>
+
+<main role="main" class="home">
+  <!-- The image at the top of the home page, displayed on smaller screens. -->
+  <div class="home-mobile-hero-banner d-lg-none"></div>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12 col-lg-12 px-10-percent">
+        <div class="row hot-products-row px-xl-6">
+          <div class="col-12">
+            <h3>Hot Products</h3>
+          </div>
+
+          {{ range $.products }}
+          <div class="col-lg-4 col-md-4 col-sm-12 mb-4">
+            <div class="hot-product-card glass-dark">
+              <a href="{{ $.baseUrl }}/product/{{.Item.Id}}">
+                <img loading="lazy" src="{{ $.baseUrl }}{{.Item.Picture}}" alt="{{ .Item.Name }}">
+                <div class="hot-product-card-img-overlay"></div>
+              </a>
+              <div class="product-info">
+                <div class="hot-product-card-name">{{ .Item.Name }}</div>
+                <div class="hot-product-card-price">{{ renderMoney .Price }}</div>
+              </div>
+            </div>
+          </div>
+          {{ end }}
+        </div>
+
+        <!-- Footer removed for cleaner look -->
+      </div>
+    </div>
+  </div>
+</main>
+
+{{ template "footer" . }}
+
+<!-- Modern JavaScript -->
+<script src="{{ $.baseUrl }}/static/scripts/modern.js"></script>
+
+<style>
+.modern-hero {
+  background: transparent;
+  padding: 80px 0 60px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 40px;
+}
+
+.home {
+  min-height: auto !important;
+  height: auto !important;
+}
+
+.home .container-fluid {
+  min-height: auto !important;
+  height: auto !important;
+}
+
+/* Glass effect removed as requested */
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.hero-title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: #FFFFFF !important;
+  margin-bottom: 24px;
+  letter-spacing: -1px;
+  line-height: 1.2;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 2px 10px rgba(245, 158, 11, 0.3);
+}
+
+.hero-title span.highlight {
+  padding: 0 8px;
+  display: inline-block;
+  font-weight: 900;
+  color: #F59E0B !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+  opacity: 1 !important;
+  visibility: visible !important;
+  background: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  filter: none !important;
+}
+
+.hero-subtitle {
+  font-size: 1.3rem;
+  color: #D1D5DB !important;
+  font-weight: 400;
+  margin-bottom: 0;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.product-info {
+  position: relative;
+  z-index: 2;
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.2rem;
+  }
+  
+  .modern-hero {
+    padding: 80px 0 60px;
+  }
+}
+</style>
+
+{{ end }}

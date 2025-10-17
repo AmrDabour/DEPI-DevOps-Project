@@ -1,0 +1,43 @@
+.order {
+    background: transparent;
+}
+
+.order-complete-section {
+    max-width: 550px;
+    padding: 56px 40px 120px;
+    background: rgba(30, 41, 59, 0.5);
+    backdrop-filter: blur(30px) saturate(180%);
+    -webkit-backdrop-filter: blur(30px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 28px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    margin: 0 auto;
+}
+
+.order-complete-section h3 {
+    margin: 0;
+    font-size: 36px;
+    font-weight: normal;
+}
+
+.order-complete-section p {
+    margin-top: 8px;
+}
+
+.order-complete-section .padding-y-24 {
+    padding-bottom: 24px;
+    padding-top: 24px;
+}
+
+.order-complete-section .border-bottom-solid {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.order-complete-section .cymbal-button-primary {
+    margin-top: 24px;
+}
+
+.order-complete-section a.cymbal-button-primary:hover {
+    text-decoration: none;
+    color: white;
+}

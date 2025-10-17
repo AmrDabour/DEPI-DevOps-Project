@@ -1,0 +1,25 @@
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+images:
+- name: amrdabour/adservice
+  tagSuffix: CONTAINER_IMAGES_TAG_SUFFIX
+- name: amrdabour/cartservice
+  tagSuffix: CONTAINER_IMAGES_TAG_SUFFIX
+- name: amrdabour/checkoutservice
+  tagSuffix: CONTAINER_IMAGES_TAG_SUFFIX
+- name: amrdabour/currencyservice
+  tagSuffix: CONTAINER_IMAGES_TAG_SUFFIX
+- name: amrdabour/emailservice
+  tagSuffix: CONTAINER_IMAGES_TAG_SUFFIX
+- name: amrdabour/frontend
+  tagSuffix: CONTAINER_IMAGES_TAG_SUFFIX
+- name: amrdabour/loadgenerator
+  tagSuffix: CONTAINER_IMAGES_TAG_SUFFIX
+- name: amrdabour/paymentservice
+  tagSuffix: CONTAINER_IMAGES_TAG_SUFFIX
+- name: amrdabour/productcatalogservice
+  tagSuffix: CONTAINER_IMAGES_TAG_SUFFIX
+- name: amrdabour/recommendationservice
+  tagSuffix: CONTAINER_IMAGES_TAG_SUFFIX
+- name: amrdabour/shippingservice
+  tagSuffix: CONTAINER_IMAGES_TAG_SUFFIX

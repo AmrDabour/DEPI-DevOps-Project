@@ -1,0 +1,79 @@
+/* Dark Mode Force Override - Ultimate Dark Theme with Glass Support */
+
+/* Preserve glass effects while maintaining dark theme */
+html, html *, 
+body, body *,
+main, main *,
+.container, .container *,
+.row, .row *,
+[class*="col"], [class*="col"] *,
+section, section *,
+p, p *,
+span, span *,
+h1, h2, h3, h4, h5, h6,
+a {
+  color: #E5E7EB !important;
+}
+
+/* Only make non-glass elements transparent */
+div:not(.glass):not(.glass-dark):not(.glass-card):not(.hot-product-card):not(.cart-summary-section):not(.cart-checkout-form):not(.empty-cart-section):not(.order-complete-section):not(.h-product):not(.bot-message):not(.user-message):not(.bot-input):not(.bot-product):not(.chat-modal):not(.cymbal-form-field) {
+  background-color: transparent !important;
+}
+
+/* Specific overrides for common Bootstrap classes */
+.bg-light,
+.bg-white,
+.bg-secondary,
+.bg-primary {
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: #E5E7EB !important;
+}
+
+/* Card and container overrides */
+.card,
+.card-body,
+.card-header,
+.container-fluid {
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: #E5E7EB !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Form elements - preserve glass effect styling */
+input:not(.cymbal-form-field input), 
+select:not(.cymbal-form-field select), 
+textarea {
+  color: #E5E7EB !important;
+}
+
+/* Preserve button glass effects */
+button:not(.cymbal-button-primary):not(.cymbal-button-secondary):not(.bot-input-button) {
+  background: transparent !important;
+  color: #E5E7EB !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Links */
+a, a:hover, a:visited, a:focus, a:active {
+  color: #60A5FA !important;
+}
+
+/* Text elements */
+p, span, div, small, strong, b, i, em {
+  color: #E5E7EB !important;
+}
+
+/* Headers */
+h1, h2, h3, h4, h5, h6 {
+  color: #F8FAFC !important;
+}
+
+/* Price text */
+.product-price, .hot-product-card-price {
+  color: #F59E0B !important;
+}
+
+/* Ensure main body background */
+body {
+  background: linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #334155 100%) !important;
+}
