@@ -1,28 +1,54 @@
+# OS files
 .DS_Store
+*~
+
+# IDE files
 .eclipse.buildship.core.prefs
-.gradle/
 .idea/
-.kubernetes-manifests-*/
 .project
-.skaffold-*.yaml
-.terraform.lock.hcl
-.terraform/*
-.venv/
 .vs/
 .vscode/
 *.iml
 *.ipr
 *.iws
-*.pyc
 *.swp
-*.tfstate*
-*.tfvars
-*~
+
+# Build directories
+.gradle/
 bin/
 build/
-Dockerfile.pip
 node_modules/
 obj/
 pkg/
-release/wi-kubernetes-manifests.yaml
 vendor/
+
+# Terraform files
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+*.tfvars
+terraform/.terraform/
+terraform/.terraform.lock.hcl
+terraform/terraform.tfstate*
+terraform/*.tfvars
+terraform/policy.yaml
+
+# Python
+.venv/
+*.pyc
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Kubernetes
+.kubernetes-manifests-*/
+.skaffold-*.yaml
+release/wi-kubernetes-manifests.yaml
+
+# Docker
+Dockerfile.pip
+
+# Logs
+*.log
