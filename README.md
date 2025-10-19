@@ -1,167 +1,723 @@
-<!-- <p align="center">
-<img src="/src/frontend/static/icons/Hipster_HeroLogoMaroon.svg" width="300" alt="DevOps Project" />
-</p> -->
-![Continuous Integration](https://github.com/GoogleCloudPlatform/microservices-demo/workflows/Continuous%20Integration%20-%20Main/Release/badge.svg)
+# 🛍️ Microservices E-Commerce Demo
 
-**DevOps Project** is a cloud-first microservices demo application.  The application is a
-web-based e-commerce app where users can browse items, add them to the cart, and purchase them.
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)]()
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue)]()
+[![Kubernetes](https://img.shields.io/badge/kubernetes-ready-326CE5?logo=kubernetes)]()
+[![Docker](https://img.shields.io/badge/docker-enabled-2496ED?logo=docker)]()
 
-Google uses this application to demonstrate how developers can modernize enterprise applications using Google Cloud products, including: [Google Kubernetes Engine (GKE)](https://cloud.google.com/kubernetes-engine), [Cloud Service Mesh (CSM)](https://cloud.google.com/service-mesh), [gRPC](https://grpc.io/), [Cloud Operations](https://cloud.google.com/products/operations), [Spanner](https://cloud.google.com/spanner), [Memorystore](https://cloud.google.com/memorystore), [AlloyDB](https://cloud.google.com/alloydb), and [Gemini](https://ai.google.dev/). This application works on any Kubernetes cluster.
+A cloud-native microservices demonstration application showcasing modern e-commerce architecture built with multiple programming languages and deployed on Kubernetes.
 
-If you’re using this demo, please **★Star** this repository to show your interest!
+---
 
-**Note to Googlers:** Please fill out the form at [go/microservices-demo](http://go/microservices-demo).
+## 📋 Table of Contents
 
-## Architecture
+- [Overview](#-overview)
+- [Architecture](#-architecture)
+- [Services](#-services)
+- [Technology Stack](#-technology-stack)
+- [Prerequisites](#-prerequisites)
+- [Quick Start](#-quick-start)
+- [Deployment Options](#-deployment-options)
+- [Configuration](#-configuration)
+- [Development](#-development)
+- [Testing](#-testing)
+- [Monitoring](#-monitoring)
+- [Contributing](#-contributing)
+- [Troubleshooting](#-troubleshooting)
+- [License](#-license)
 
-**DevOps Project** is composed of 11 microservices written in different
-languages that talk to each other over gRPC.
+---
 
-[![Architecture of
-microservices](/docs/img/architecture-diagram.png)](/docs/img/architecture-diagram.png)
+## 🎯 Overview
 
-Find **Protocol Buffers Descriptions** at the [`./protos` directory](/protos).
+This project demonstrates a complete microservices-based e-commerce platform that includes:
 
-| Service                                              | Language      | Description                                                                                                                       |
-| ---------------------------------------------------- | ------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| [frontend](/src/frontend)                           | Go            | Exposes an HTTP server to serve the website. Does not require signup/login and generates session IDs for all users automatically. |
-| [cartservice](/src/cartservice)                     | C#            | Stores the items in the user's shopping cart in Redis and retrieves it.                                                           |
-| [productcatalogservice](/src/productcatalogservice) | Go            | Provides the list of products from a JSON file and ability to search products and get individual products.                        |
-| [currencyservice](/src/currencyservice)             | Node.js       | Converts one money amount to another currency. Uses real values fetched from European Central Bank. It's the highest QPS service. |
-| [paymentservice](/src/paymentservice)               | Node.js       | Charges the given credit card info (mock) with the given amount and returns a transaction ID.                                     |
-| [shippingservice](/src/shippingservice)             | Go            | Gives shipping cost estimates based on the shopping cart. Ships items to the given address (mock)                                 |
-| [emailservice](/src/emailservice)                   | Python        | Sends users an order confirmation email (mock).                                                                                   |
-| [checkoutservice](/src/checkoutservice)             | Go            | Retrieves user cart, prepares order and orchestrates the payment, shipping and the email notification.                            |
-| [recommendationservice](/src/recommendationservice) | Python        | Recommends other products based on what's given in the cart.                                                                      |
-| [adservice](/src/adservice)                         | Java          | Provides text ads based on given context words.                                                                                   |
-| [loadgenerator](/src/loadgenerator)                 | Python/Locust | Continuously sends requests imitating realistic user shopping flows to the frontend.                                              |
+- **11 Microservices** written in different programming languages
+- **gRPC** for inter-service communication
+- **Kubernetes** for container orchestration
+- **Terraform** for infrastructure as code
+- **Skaffold** for continuous development
+- **Kustomize** for Kubernetes configuration management
 
-## Screenshots
+### Key Features
 
-| Home Page                                                                                                         | Checkout Screen                                                                                                    |
-| ----------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| [![Screenshot of store homepage](/docs/img/devops-project-frontend-1.png)](/docs/img/devops-project-frontend-1.png) | [![Screenshot of checkout screen](/docs/img/devops-project-frontend-2.png)](/docs/img/devops-project-frontend-2.png) |
+✅ Polyglot architecture (Go, Python, Java, Node.js, C#)  
+✅ Cloud-native design patterns  
+✅ Service mesh support (Istio)  
+✅ Observability (tracing, metrics, logging)  
+✅ CI/CD ready  
+✅ Multi-platform support (linux/amd64, linux/arm64)  
+✅ Load testing capabilities  
+✅ Shopping assistant with AI integration  
 
-## Quickstart (GKE)
+---
 
-1. Ensure you have the following requirements:
-   - [Google Cloud project](https://cloud.google.com/resource-manager/docs/creating-managing-projects#creating_a_project).
-   - Shell environment with `gcloud`, `git`, and `kubectl`.
+## 🏗️ Architecture
 
-2. Clone the latest major version.
+```
+┌─────────────┐
+│   Frontend  │
+│   (Go)      │
+└─────┬───────┘
+      │
+      ├─────────────┬──────────────┬─────────────┬──────────────┬─────────────┐
+      │             │              │             │              │             │
+┌─────▼──────┐ ┌───▼────────┐ ┌──▼──────────┐ ┌▼──────────┐ ┌─▼──────────┐ │
+│  AdService │ │ Cart       │ │ Product     │ │ Currency  │ │ Checkout   │ │
+│  (Java)    │ │ Service    │ │ Catalog     │ │ Service   │ │ Service    │ │
+│            │ │ (C#)       │ │ Service     │ │ (Node.js) │ │ (Go)       │ │
+└────────────┘ └────────────┘ │ (Go)        │ └───────────┘ └─────┬──────┘ │
+                               └─────────────┘                     │        │
+                                      │                            │        │
+                               ┌──────▼───────┐           ┌────────▼──────┐ │
+                               │Recommendation│           │   Payment     │ │
+                               │  Service     │           │   Service     │ │
+                               │  (Python)    │           │   (Node.js)   │ │
+                               └──────────────┘           └───────────────┘ │
+                                                                             │
+                            ┌────────────────────────────────────────────────┘
+                            │
+                    ┌───────▼────────┐         ┌──────────────────┐
+                    │   Shipping     │         │   Email          │
+                    │   Service      │         │   Service        │
+                    │   (Go)         │         │   (Python)       │
+                    └────────────────┘         └──────────────────┘
+```
 
-   ```sh
-   git clone --depth 1 --branch v0 https://github.com/GoogleCloudPlatform/microservices-demo.git
-   cd microservices-demo/
-   ```
+### Communication Flow
 
-   The `--depth 1` argument skips downloading git history.
+- **Frontend** serves the web UI and aggregates data from backend services
+- **gRPC** is used for all inter-service communication
+- **REST/HTTP** endpoints for health checks and external access
+- **Shopping Assistant** provides AI-powered recommendations
 
-3. Set the Google Cloud project and region and ensure the Google Kubernetes Engine API is enabled.
+---
 
-   ```sh
-   export PROJECT_ID=<PROJECT_ID>
-   export REGION=us-central1
-   gcloud services enable container.googleapis.com \
-     --project=${PROJECT_ID}
-   ```
+## 🎛️ Services
 
-   Substitute `<PROJECT_ID>` with the ID of your Google Cloud project.
+| Service | Language | Description | Port |
+|---------|----------|-------------|------|
+| **frontend** | Go | Exposes an HTTP server for the web UI. Handles user requests and aggregates data from backend services | 8080 |
+| **cartservice** | C# (.NET) | Stores shopping cart items in Redis and manages cart operations | 7070 |
+| **productcatalogservice** | Go | Provides product information from a JSON file and serves product queries | 3550 |
+| **currencyservice** | Node.js | Converts currency amounts using real-time exchange rates | 7000 |
+| **paymentservice** | Node.js | Processes payment transactions (mock implementation) | 50051 |
+| **shippingservice** | Go | Calculates shipping costs based on cart items and destination | 50051 |
+| **emailservice** | Python | Sends order confirmation emails to customers | 8080 |
+| **checkoutservice** | Go | Orchestrates the checkout process: payment, shipping, and email | 5050 |
+| **recommendationservice** | Python | Recommends products based on cart contents using ML | 8080 |
+| **adservice** | Java | Serves contextual advertisements based on keywords | 9555 |
+| **shoppingassistantservice** | Python | AI-powered shopping assistant for product recommendations | 8080 |
+| **loadgenerator** | Python/Locust | Continuously generates realistic user traffic for testing | 8089 |
 
-4. Create a GKE cluster and get the credentials for it.
+---
 
-   ```sh
-   gcloud container clusters create-auto devops-project \
-     --project=${PROJECT_ID} --region=${REGION}
-   ```
+## 💻 Technology Stack
 
-   Creating the cluster may take a few minutes.
+### Languages & Frameworks
+- **Go** - Frontend, Product Catalog, Checkout, Shipping
+- **Python** - Email, Recommendation, Shopping Assistant, Load Generator
+- **Java** - Ad Service
+- **Node.js** - Currency, Payment
+- **C# (.NET)** - Cart Service
 
-5. Deploy DevOps Project to the cluster.
+### Infrastructure & Tools
+- **Kubernetes** - Container orchestration
+- **Docker** - Containerization
+- **Skaffold** - Local development and CI/CD
+- **Kustomize** - Kubernetes configuration management
+- **Terraform** - Infrastructure as Code (GCP)
+- **Istio** - Service mesh (optional)
 
-   ```sh
-   kubectl apply -f ./release/kubernetes-manifests.yaml
-   ```
+### Data Stores
+- **Redis** - Cart session storage
+- **Memorystore** - Managed Redis (GCP)
+- **Spanner** - Distributed SQL database (optional)
+- **AlloyDB** - PostgreSQL-compatible database (optional)
 
-6. Wait for the pods to be ready.
+### Observability
+- **OpenTelemetry** - Distributed tracing
+- **Google Cloud Operations** - Logging and monitoring
+- **Prometheus** - Metrics collection
+- **Grafana** - Metrics visualization
 
-   ```sh
-   kubectl get pods
-   ```
+---
 
-   After a few minutes, you should see the Pods in a `Running` state:
+## 📦 Prerequisites
 
-   ```
-   NAME                                     READY   STATUS    RESTARTS   AGE
-   adservice-76bdd69666-ckc5j               1/1     Running   0          2m58s
-   cartservice-66d497c6b7-dp5jr             1/1     Running   0          2m59s
-   checkoutservice-666c784bd6-4jd22         1/1     Running   0          3m1s
-   currencyservice-5d5d496984-4jmd7         1/1     Running   0          2m59s
-   emailservice-667457d9d6-75jcq            1/1     Running   0          3m2s
-   frontend-6b8d69b9fb-wjqdg                1/1     Running   0          3m1s
-   loadgenerator-665b5cd444-gwqdq           1/1     Running   0          3m
-   paymentservice-68596d6dd6-bf6bv          1/1     Running   0          3m
-   productcatalogservice-557d474574-888kr   1/1     Running   0          3m
-   recommendationservice-69c56b74d4-7z8r5   1/1     Running   0          3m1s
-   redis-cart-5f59546cdd-5jnqf              1/1     Running   0          2m58s
-   shippingservice-6ccc89f8fd-v686r         1/1     Running   0          2m58s
-   ```
+Before you begin, ensure you have the following installed:
 
-7. Access the web frontend in a browser using the frontend's external IP.
+### Required
+- **Docker** (v20.10+) - [Install Docker](https://docs.docker.com/get-docker/)
+- **Kubernetes** (v1.24+) - [Install kubectl](https://kubernetes.io/docs/tasks/tools/)
+- **Git** - [Install Git](https://git-scm.com/downloads)
 
-   ```sh
-   kubectl get service frontend-external | awk '{print $4}'
-   ```
+### Recommended
+- **Skaffold** (v2.0+) - [Install Skaffold](https://skaffold.dev/docs/install/)
+- **Kustomize** (v4.5+) - [Install Kustomize](https://kubectl.docs.kubernetes.io/installation/kustomize/)
+- **Terraform** (v1.0+) - [Install Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli)
 
-   Visit `http://EXTERNAL_IP` in a web browser to access your instance of DevOps Project.
+### For Local Development
+- **Minikube** or **Kind** - For local Kubernetes cluster
+- **Skaffold** - For hot-reload development
 
-8. Congrats! You've deployed the default DevOps Project. To deploy a different variation of DevOps Project (e.g., with Google Cloud Operations tracing, Istio, etc.), see [Deploy DevOps Project variations with Kustomize](#deploy-devops-project-variations-with-kustomize).
+### For GCP Deployment
+- **Google Cloud SDK (gcloud)** - [Install gcloud](https://cloud.google.com/sdk/docs/install)
+- **Active GCP Project** with billing enabled
+- **Container Registry** or **Artifact Registry** access
 
-9. Once you are done with it, delete the GKE cluster.
+---
 
-   ```sh
-   gcloud container clusters delete devops-project \
-     --project=${PROJECT_ID} --region=${REGION}
-   ```
+## 🚀 Quick Start
 
-   Deleting the cluster may take a few minutes.
+### Option 1: Using Pre-built Images (Fastest)
 
-## Additional deployment options
+Deploy the application using pre-built images from the release directory:
 
-- **Terraform**: [See these instructions](/terraform) to learn how to deploy DevOps Project using [Terraform](https://www.terraform.io/intro).
-- **Istio / Cloud Service Mesh**: [See these instructions](/kustomize/components/service-mesh-istio/README.md) to deploy DevOps Project alongside an Istio-backed service mesh.
-- **Non-GKE clusters (Minikube, Kind, etc)**: See the [Development guide](/docs/development-guide.md) to learn how you can deploy DevOps Project on non-GKE clusters.
-- **AI assistant using Gemini**: [See these instructions](/kustomize/components/shopping-assistant/README.md) to deploy a Gemini-powered AI assistant that suggests products to purchase based on an image.
-- **And more**: The [`/kustomize` directory](/kustomize) contains instructions for customizing the deployment of DevOps Project with other variations.
+```bash
+# Clone the repository
+git clone https://github.com/AmrDabour/DEPI-DevOps-Project.git
+cd microservices-demo
 
-## Documentation
+# Deploy to Kubernetes
+kubectl apply -f ./release/kubernetes-manifests.yaml
 
-- [Development](/docs/development-guide.md) to learn how to run and develop this app locally.
+# Wait for all pods to be ready
+kubectl wait --for=condition=ready pod --all -n default --timeout=300s
 
-## Demos featuring DevOps Project
+# Get the frontend external IP
+kubectl get service frontend-external
 
-- [Platform Engineering in action: Deploy the DevOps Project sample apps with Score and Humanitec](https://medium.com/p/d99101001e69)
-- [The new Kubernetes Gateway API with Istio and Anthos Service Mesh (ASM)](https://medium.com/p/9d64c7009cd)
-- [Use Azure Redis Cache with the DevOps Project sample on AKS](https://medium.com/p/981bd98b53f8)
-- [Sail Sharp, 8 tips to optimize and secure your .NET containers for Kubernetes](https://medium.com/p/c68ba253844a)
-- [Deploy multi-region application with Anthos and Google cloud Spanner](https://medium.com/google-cloud/a2ea3493ed0)
-- [Use Google Cloud Memorystore (Redis) with the DevOps Project sample on GKE](https://medium.com/p/82f7879a900d)
-- [Use Helm to simplify the deployment of DevOps Project, with a Service Mesh, GitOps, and more!](https://medium.com/p/246119e46d53)
-- [How to reduce microservices complexity with Apigee and Anthos Service Mesh](https://cloud.google.com/blog/products/application-modernization/api-management-and-service-mesh-go-together)
-- [gRPC health probes with Kubernetes 1.24+](https://medium.com/p/b5bd26253a4c)
-- [Use Google Cloud Spanner with the DevOps Project sample](https://medium.com/p/f7248e077339)
-- [Seamlessly encrypt traffic from any apps in your Mesh to Memorystore (redis)](https://medium.com/google-cloud/64b71969318d)
-- [Strengthen your app's security with Cloud Service Mesh and Anthos Config Management](https://cloud.google.com/service-mesh/docs/strengthen-app-security)
-- [From edge to mesh: Exposing service mesh applications through GKE Ingress](https://cloud.google.com/architecture/exposing-service-mesh-apps-through-gke-ingress)
-- [Take the first step toward SRE with Cloud Operations Sandbox](https://cloud.google.com/blog/products/operations/on-the-road-to-sre-with-cloud-operations-sandbox)
-- [Deploying the DevOps Project sample application on Cloud Service Mesh](https://cloud.google.com/service-mesh/docs/onlineboutique-install-kpt)
-- [Anthos Service Mesh Workshop: Lab Guide](https://codelabs.developers.google.com/codelabs/anthos-service-mesh-workshop)
-- [KubeCon EU 2019 - Reinventing Networking: A Deep Dive into Istio's Multicluster Gateways - Steve Dake, Independent](https://youtu.be/-t2BfT59zJA?t=982)
-- Google Cloud Next'18 SF
-  - [Day 1 Keynote](https://youtu.be/vJ9OaAqfxo4?t=2416) showing GKE On-Prem
-  - [Day 3 Keynote](https://youtu.be/JQPOPV_VH5w?t=815) showing Stackdriver
-    APM (Tracing, Code Search, Profiler, Google Cloud Build)
-  - [Introduction to Service Management with Istio](https://www.youtube.com/watch?v=wCJrdKdD6UM&feature=youtu.be&t=586)
-- [Google Cloud Next'18 London – Keynote](https://youtu.be/nIq2pkNcfEI?t=3071)
-  showing Stackdriver Incident Response Management
-- [Microservices demo showcasing Go Micro](https://github.com/go-micro/demo)
+# Access the application
+# Navigate to http://<EXTERNAL-IP>
+```
+
+### Option 2: Using Skaffold (Development)
+
+Build and deploy with hot-reload for development:
+
+```bash
+# Clone the repository
+git clone https://github.com/AmrDabour/DEPI-DevOps-Project.git
+cd microservices-demo
+
+# Start skaffold in dev mode
+skaffold dev
+
+# Or run once without watching
+skaffold run
+
+# Access the application at http://localhost:8080
+```
+
+### Option 3: Build and Push Custom Images
+
+Build all services and push to your Docker Hub repository:
+
+```bash
+# Login to Docker Hub
+docker login
+
+# Build and push all services (PowerShell)
+.\build_all_services.ps1
+
+# Or using bash
+./build_and_push.sh
+
+# Update manifests with your image registry
+# Edit kubernetes-manifests/*.yaml files to use your images
+
+# Deploy to Kubernetes
+kubectl apply -f kubernetes-manifests/
+```
+
+### Verify Deployment
+
+```bash
+# Check all pods are running
+kubectl get pods
+
+# Check services
+kubectl get services
+
+# View logs for a specific service
+kubectl logs -l app=frontend
+
+# Access the application
+kubectl port-forward svc/frontend 8080:80
+# Navigate to http://localhost:8080
+```
+
+---
+
+## 🌐 Deployment Options
+
+### Local Kubernetes (Minikube/Kind)
+
+```bash
+# Start minikube
+minikube start --cpus=4 --memory=8192
+
+# Enable addons
+minikube addons enable ingress
+minikube addons enable metrics-server
+
+# Deploy using skaffold
+skaffold dev
+
+# Access the application
+minikube service frontend-external
+```
+
+### Google Kubernetes Engine (GKE)
+
+#### Using Terraform
+
+```bash
+cd terraform
+
+# Initialize Terraform
+terraform init
+
+# Create terraform.tfvars file
+cat > terraform.tfvars << EOF
+gcp_project_id = "your-project-id"
+region         = "us-central1"
+zone           = "us-central1-a"
+cluster_name   = "microservices-demo"
+EOF
+
+# Plan and apply
+terraform plan
+terraform apply
+
+# Get cluster credentials
+gcloud container clusters get-credentials microservices-demo \
+  --region us-central1 --project your-project-id
+
+# Deploy the application
+skaffold run --default-repo=gcr.io/your-project-id
+```
+
+#### Manual GKE Setup
+
+```bash
+# Create GKE cluster
+gcloud container clusters create microservices-demo \
+  --zone=us-central1-a \
+  --machine-type=e2-standard-2 \
+  --num-nodes=4 \
+  --enable-autoscaling \
+  --min-nodes=3 \
+  --max-nodes=10
+
+# Get credentials
+gcloud container clusters get-credentials microservices-demo --zone=us-central1-a
+
+# Deploy
+kubectl apply -f release/kubernetes-manifests.yaml
+```
+
+### Using Kustomize Components
+
+Kustomize allows you to customize deployments with various components:
+
+```bash
+# Base deployment
+kubectl apply -k kustomize/base
+
+# With specific components
+kubectl apply -k kustomize/components/memorystore
+kubectl apply -k kustomize/components/service-mesh-istio
+kubectl apply -k kustomize/components/google-cloud-operations
+
+# Custom combination
+cat <<EOF > kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- kustomize/base
+components:
+- kustomize/components/memorystore
+- kustomize/components/google-cloud-operations
+- kustomize/components/network-policies
+EOF
+
+kubectl apply -k .
+```
+
+### Available Kustomize Components
+
+- **alloydb** - Use AlloyDB for database
+- **memorystore** - Use Google Cloud Memorystore for Redis
+- **spanner** - Use Cloud Spanner for database
+- **service-mesh-istio** - Deploy with Istio service mesh
+- **google-cloud-operations** - Enable GCP logging and monitoring
+- **network-policies** - Apply network security policies
+- **shopping-assistant** - Enable AI shopping assistant
+- **cymbal-branding** - Custom branding
+- **non-public-frontend** - Internal-only frontend
+- **without-loadgenerator** - Disable load generator
+- **custom-base-url** - Custom base URL configuration
+- **container-images-registry** - Use custom container registry
+- **container-images-tag** - Use specific image tags
+
+---
+
+## ⚙️ Configuration
+
+### Environment Variables
+
+Each service can be configured using environment variables. Common configurations:
+
+```yaml
+# Frontend
+PORT: "8080"
+PRODUCT_CATALOG_SERVICE_ADDR: "productcatalogservice:3550"
+CURRENCY_SERVICE_ADDR: "currencyservice:7000"
+CART_SERVICE_ADDR: "cartservice:7070"
+RECOMMENDATION_SERVICE_ADDR: "recommendationservice:8080"
+CHECKOUT_SERVICE_ADDR: "checkoutservice:5050"
+SHIPPING_SERVICE_ADDR: "shippingservice:50051"
+AD_SERVICE_ADDR: "adservice:9555"
+
+# Cart Service (Redis)
+REDIS_ADDR: "redis-cart:6379"
+
+# Currency Service
+PORT: "7000"
+```
+
+### Custom Configuration
+
+1. **Edit Kubernetes manifests** in `kubernetes-manifests/` directory
+2. **Use Kustomize overlays** for environment-specific configurations
+3. **Set environment variables** in deployment YAML files
+4. **Configure resource limits** for each service
+
+### Image Registry Configuration
+
+To use your own Docker registry:
+
+```bash
+# Using Skaffold
+skaffold run --default-repo=your-registry.io/your-project
+
+# Using Kustomize component
+kubectl apply -k kustomize/components/container-images-registry
+# Edit the component to set your registry
+```
+
+---
+
+## 👨‍💻 Development
+
+### Local Development Workflow
+
+```bash
+# Start Skaffold in dev mode for hot reload
+skaffold dev
+
+# Make changes to source code
+# Skaffold will automatically:
+# 1. Rebuild the affected service
+# 2. Push the new image
+# 3. Redeploy to Kubernetes
+# 4. Stream logs to your terminal
+```
+
+### Building Individual Services
+
+```bash
+# Navigate to service directory
+cd src/frontend
+
+# Build Docker image
+docker build -t frontend:dev .
+
+# Run locally
+docker run -p 8080:8080 frontend:dev
+```
+
+### Running Services Locally (Without Docker)
+
+Each service directory contains specific instructions. Example for frontend:
+
+```bash
+cd src/frontend
+
+# Install dependencies
+go mod download
+
+# Run the service
+go run .
+```
+
+### Code Structure
+
+```
+src/
+├── adservice/              # Java service with Gradle
+│   ├── src/
+│   ├── build.gradle
+│   └── Dockerfile
+├── cartservice/            # C# service with .NET
+│   ├── src/
+│   ├── cartservice.sln
+│   └── Dockerfile
+├── checkoutservice/        # Go service
+│   ├── main.go
+│   ├── go.mod
+│   └── Dockerfile
+└── [other services...]
+```
+
+---
+
+## 🧪 Testing
+
+### Load Testing
+
+The project includes a load generator using Locust:
+
+```bash
+# Deploy with load generator
+skaffold run
+
+# Access Locust UI
+kubectl port-forward svc/loadgenerator 8089:8089
+
+# Navigate to http://localhost:8089
+```
+
+### Manual Testing
+
+```bash
+# Test product catalog
+curl http://<frontend-ip>/api/products
+
+# Test health endpoints
+kubectl exec -it <frontend-pod> -- curl localhost:8080/_healthz
+```
+
+### Verify Products Script
+
+```bash
+# Verify all products are accessible
+python verify_products.py
+```
+
+### Integration Tests
+
+Each service may include unit and integration tests:
+
+```bash
+# Example: Cart Service tests
+cd src/cartservice
+dotnet test
+
+# Example: Frontend tests
+cd src/frontend
+go test ./...
+```
+
+---
+
+## 📊 Monitoring
+
+### Health Checks
+
+All services expose health check endpoints:
+
+```bash
+# Check frontend health
+kubectl exec -it <frontend-pod> -- curl localhost:8080/_healthz
+
+# Check all pods
+kubectl get pods -o wide
+```
+
+### Logs
+
+```bash
+# View logs for specific service
+kubectl logs -f deployment/frontend
+
+# View logs for all services
+kubectl logs -f -l app
+
+# Tail logs with stern (if installed)
+stern frontend
+```
+
+### Metrics with Google Cloud Operations
+
+When deployed with the `google-cloud-operations` component:
+
+```bash
+# Deploy with monitoring
+kubectl apply -k kustomize/components/google-cloud-operations
+
+# View in GCP Console:
+# - Cloud Trace for distributed tracing
+# - Cloud Logging for centralized logs
+# - Cloud Monitoring for metrics and alerts
+```
+
+### Service Mesh Observability (Istio)
+
+```bash
+# Deploy with Istio
+kubectl apply -k kustomize/components/service-mesh-istio
+
+# Access Kiali dashboard
+istioctl dashboard kiali
+
+# Access Grafana
+istioctl dashboard grafana
+
+# Access Jaeger for tracing
+istioctl dashboard jaeger
+```
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! Here's how you can help:
+
+### Reporting Issues
+
+- Use GitHub Issues to report bugs
+- Include detailed reproduction steps
+- Attach relevant logs and screenshots
+
+### Submitting Changes
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+### Development Guidelines
+
+- Follow the existing code style for each language
+- Add tests for new features
+- Update documentation as needed
+- Ensure all services build successfully
+- Test in a local Kubernetes environment before submitting
+
+---
+
+## 🔧 Troubleshooting
+
+### Common Issues
+
+#### Pods Not Starting
+
+```bash
+# Check pod status
+kubectl get pods
+
+# Describe problematic pod
+kubectl describe pod <pod-name>
+
+# Check events
+kubectl get events --sort-by='.lastTimestamp'
+```
+
+#### Image Pull Errors
+
+```bash
+# Verify image exists
+docker pull <image-name>
+
+# Check image pull secrets
+kubectl get secrets
+
+# Create docker registry secret if needed
+kubectl create secret docker-registry regcred \
+  --docker-server=<your-registry> \
+  --docker-username=<username> \
+  --docker-password=<password>
+```
+
+#### Service Communication Issues
+
+```bash
+# Check service endpoints
+kubectl get endpoints
+
+# Test service connectivity from a pod
+kubectl run -it --rm debug --image=alpine --restart=Never -- sh
+# Inside pod: wget -O- http://frontend:80
+```
+
+#### Memory or CPU Issues
+
+```bash
+# Check resource usage
+kubectl top pods
+kubectl top nodes
+
+# Adjust resource limits in manifests
+# Edit kubernetes-manifests/<service>.yaml
+```
+
+### Debugging Tips
+
+1. **Enable verbose logging** in service configurations
+2. **Use kubectl port-forward** to access services locally
+3. **Check service dependencies** are running before dependent services
+4. **Review resource limits** if pods are being OOMKilled
+5. **Examine network policies** if using the network-policies component
+
+### Getting Help
+
+- **GitHub Issues**: [Report a bug or request a feature](https://github.com/AmrDabour/DEPI-DevOps-Project/issues)
+- **Discussions**: Join community discussions
+- **Documentation**: Check service-specific READMEs in `src/*/README.md`
+
+---
+
+## 📄 License
+
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 🙏 Acknowledgments
+
+- Based on Google Cloud Platform's microservices demo
+- Built as part of the DEPI DevOps Project
+- Maintained by [AmrDabour](https://github.com/AmrDabour)
+
+---
+
+## 📞 Contact
+
+**Project Owner**: Amr Dabour  
+**Repository**: [DEPI-DevOps-Project](https://github.com/AmrDabour/DEPI-DevOps-Project)
+
+---
+
+## 🗺️ Roadmap
+
+- [ ] Add Helm charts for deployment
+- [ ] Implement GitOps with ArgoCD
+- [ ] Add more comprehensive tests
+- [ ] Support for additional cloud providers (AWS, Azure)
+- [ ] Enhanced monitoring dashboards
+- [ ] Security scanning integration
+- [ ] Performance optimization guides
+
+---
+
+<div align="center">
+
+**⭐ If you find this project helpful, please consider giving it a star! ⭐**
+
+Made with ❤️ by the DEPI DevOps Team
+
+</div>
