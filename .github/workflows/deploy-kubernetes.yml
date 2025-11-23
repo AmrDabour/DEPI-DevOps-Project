@@ -1,0 +1,115 @@
+name: Deploy to Kubernetes
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        type: choice
+        options:
+          - staging
+          - production
+      image_tag:
+        description: 'Image tag to deploy (leave empty for latest)'
+        required: false
+        type: string
+
+jobs:
+  deploy-gke:
+    name: Deploy to GKE
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Install gke-gcloud-auth-plugin
+        run: |
+          gcloud components install gke-gcloud-auth-plugin
+
+      - name: Get GKE credentials
+        run: |
+          gcloud container clusters get-credentials ${{ secrets.GKE_CLUSTER_NAME }} \
+            --zone ${{ secrets.GKE_ZONE }} \
+            --project ${{ secrets.GCP_PROJECT_ID }}
+
+      - name: Deploy to Kubernetes
+        run: |
+          # Set image tag
+          IMAGE_TAG="${{ inputs.image_tag }}"
+          if [ -z "$IMAGE_TAG" ]; then
+            IMAGE_TAG="main-$(echo ${{ github.sha }} | cut -c1-7)"
+          fi
+          
+          # Apply manifests
+          kubectl apply -f kubernetes-manifests/
+          
+          # Wait for rollout
+          kubectl rollout status deployment/frontend -n default --timeout=5m
+          
+          echo "Deployment completed with image tag: $IMAGE_TAG"
+
+      - name: Verify deployment
+        run: |
+          kubectl get pods -n default
+          kubectl get services -n default
+
+  deploy-any-k8s:
+    name: Deploy to Any Kubernetes Cluster
+    runs-on: ubuntu-latest
+    if: secrets.KUBE_CONFIG != ''
+    environment: ${{ inputs.environment }}
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v4
+        with:
+          version: 'latest'
+
+      - name: Configure kubectl
+        run: |
+          mkdir -p $HOME/.kube
+          echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > $HOME/.kube/config
+          chmod 600 $HOME/.kube/config
+
+      - name: Deploy to Kubernetes
+        run: |
+          # Set image tag
+          IMAGE_TAG="${{ inputs.image_tag }}"
+          if [ -z "$IMAGE_TAG" ]; then
+            IMAGE_TAG="main-$(echo ${{ github.sha }} | cut -c1-7)"
+          fi
+          
+          # Apply manifests
+          kubectl apply -f kubernetes-manifests/
+          
+          # Wait for rollout
+          kubectl rollout status deployment/frontend --timeout=5m
+          
+          echo "Deployment completed!"
+
+      - name: Get application URL
+        run: |
+          echo "Getting service information..."
+          kubectl get services
+          
+          EXTERNAL_IP=$(kubectl get service frontend-external -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+          if [ -n "$EXTERNAL_IP" ]; then
+            echo "Application URL: http://$EXTERNAL_IP"
+          else
+            echo "External IP not yet assigned. Run: kubectl get service frontend-external"
+          fi
+
