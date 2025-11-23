@@ -170,7 +170,41 @@ Before you begin, ensure you have the following installed:
 
 ## 🚀 Quick Start
 
-### Option 1: Using Pre-built Images (Fastest)
+**🎯 Choose your deployment method:** See [DEPLOYMENT-GUIDE.md](DEPLOYMENT-GUIDE.md) for all options.
+
+### Option 1: Automated GKE Deployment (Recommended)
+
+**Simple deployment (just the app):**
+```bash
+export PROJECT_ID=your-project-id
+export REGION=us-central1
+./deploy-simple.sh
+```
+
+**With Argo CD (includes GitOps):**
+```bash
+export PROJECT_ID=your-project-id
+export REGION=us-central1
+./deploy-with-argocd.sh
+```
+
+### Option 2: Manual Deployment (Your Current Method)
+
+```bash
+# 1. Create GKE cluster
+gcloud container clusters create-auto online-boutique \
+    --project=${PROJECT_ID} --region=${REGION}
+
+# 2. Deploy application
+kubectl apply -f ./release/kubernetes-manifests.yaml
+
+# 3. Get frontend URL
+kubectl get service frontend-external | awk '{print $4}'
+```
+
+**Delete:** `./delete-all.sh` or `gcloud container clusters delete online-boutique --project=${PROJECT_ID} --region=${REGION}`
+
+### Option 3: Using Pre-built Images (Any K8s Cluster)
 
 Deploy the application using pre-built images from the release directory:
 
@@ -361,6 +395,41 @@ kubectl apply -k .
 - **custom-base-url** - Custom base URL configuration
 - **container-images-registry** - Use custom container registry
 - **container-images-tag** - Use specific image tags
+
+### GitOps with Argo CD 🚀 NEW!
+
+Deploy and manage your microservices using GitOps principles with Argo CD:
+
+```bash
+# Quick install (5 minutes)
+./argocd/install/install-argocd.sh
+
+# Access Argo CD UI
+kubectl port-forward svc/argocd-server -n argocd 8080:443
+# Visit: https://localhost:8080
+
+# Deploy all microservices via GitOps
+kubectl apply -f argocd/applications/microservices-app.yaml
+```
+
+**Benefits of using Argo CD:**
+- ✅ Automated synchronization from Git
+- ✅ Declarative GitOps continuous delivery
+- ✅ Easy rollback to any Git commit
+- ✅ Beautiful UI for visualization
+- ✅ Multi-environment support
+- ✅ Automatic drift detection and remediation
+
+**Deployment Strategies:**
+1. **Single App** - All services managed together (recommended for beginners)
+2. **Kustomize-Based** - Environment-specific configurations (recommended for production)
+3. **Individual Services** - Per-service control (advanced)
+4. **App of Apps** - Hierarchical management (enterprise)
+
+**📖 Full Documentation:** See [argocd/](argocd/) directory for complete guides:
+- [Quick Start Guide](argocd/QUICK-START.md) - Get started in 5 minutes
+- [Complete Guide](argocd/ARGOCD-GUIDE.md) - In-depth documentation
+- [README](argocd/README.md) - Directory overview
 
 ---
 
@@ -705,11 +774,11 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENS
 ## 🗺️ Roadmap
 
 - [ ] Add Helm charts for deployment
-- [ ] Implement GitOps with ArgoCD
+- [x] **Implement GitOps with ArgoCD** ✅ [See Documentation](argocd/)
 - [ ] Add more comprehensive tests
 - [ ] Support for additional cloud providers (AWS, Azure)
 - [ ] Enhanced monitoring dashboards
-- [ ] Security scanning integration
+- [x] **Security scanning integration** ✅ [Implemented in CI/CD]
 - [ ] Performance optimization guides
 
 ---

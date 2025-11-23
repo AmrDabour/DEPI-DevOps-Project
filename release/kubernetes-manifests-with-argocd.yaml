@@ -1,0 +1,33 @@
+# ----------------------------------------------------------
+# COMPLETE DEPLOYMENT: Application + Argo CD
+# ----------------------------------------------------------
+# This file includes:
+# 1. Argo CD installation
+# 2. All microservices
+#
+# Use this for single-command deployment:
+#   kubectl apply -f release/kubernetes-manifests-with-argocd.yaml
+#
+# Note: This is a convenience file for manual deployments.
+# For production, consider installing Argo CD separately.
+# ----------------------------------------------------------
+
+---
+# Argo CD Namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: argocd
+
+---
+
+#  or
+# 
+#   gcloud container clusters create-auto devops-project --project=saedny --region=us-central1 --enable-private-nodes --master-ipv4-cidr=172.16.0.16/28   
+#   kubectl create namespace argocd
+#   kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+#   kubectl wait --for=condition=available --timeout=300s deployment/argocd-server -n argocd
+#   kubectl apply -f ./release/kubernetes-manifests.yaml
+#
+
+

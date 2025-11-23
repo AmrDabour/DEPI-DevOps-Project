@@ -5,17 +5,14 @@ metadata:
 build:
   platforms: ["linux/amd64", "linux/arm64"]
   artifacts:
-  # image tags are relative; to specify an image repo (e.g. GCR), you
-  # must provide a "default repo" using one of the methods described
-  # here:
-  # https://skaffold.dev/docs/concepts/#image-repository-handling
+
   - image: emailservice
     context: src/emailservice
   - image: productcatalogservice
     context: src/productcatalogservice
   - image: recommendationservice
     context: src/recommendationservice
-  - image: shoppingassistantservice
+  - image: shoppingassistantservice 
     context: src/shoppingassistantservice
   - image: shippingservice
     context: src/shippingservice
@@ -33,8 +30,6 @@ build:
     context: src/frontend
   - image: adservice
     context: src/adservice
-  tagPolicy:
-    gitCommit: {}
   local:
     useDockerCLI: true
     useBuildkit: true
@@ -78,6 +73,38 @@ profiles:
   - op: add
     path: /manifests/kustomize/paths/1
     value: kustomize/components/network-policies
+# "docker-hub" profile for pushing to Docker Hub
+# استخدم هذا للبناء والرفع على Docker Hub
+# الاستخدام: skaffold dev -p docker-hub
+- name: docker-hub
+  build:
+    tagPolicy:
+      sha256: {}
+    artifacts:
+    - image: amrdabour/emailservice
+      context: src/emailservice
+    - image: amrdabour/productcatalogservice
+      context: src/productcatalogservice
+    - image: amrdabour/recommendationservice
+      context: src/recommendationservice
+    - image: amrdabour/shoppingassistantservice 
+      context: src/shoppingassistantservice
+    - image: amrdabour/shippingservice
+      context: src/shippingservice
+    - image: amrdabour/checkoutservice
+      context: src/checkoutservice
+    - image: amrdabour/paymentservice
+      context: src/paymentservice
+    - image: amrdabour/currencyservice
+      context: src/currencyservice
+    - image: amrdabour/cartservice
+      context: src/cartservice/src
+      docker:
+        dockerfile: Dockerfile
+    - image: amrdabour/frontend
+      context: src/frontend
+    - image: amrdabour/adservice
+      context: src/adservice
 ---
 apiVersion: skaffold/v3
 kind: Config
@@ -106,3 +133,8 @@ profiles:
       diskSizeGb: 300
       machineType: N1_HIGHCPU_32
       timeout: 4000s
+- name: docker-hub
+  build:
+    artifacts:
+    - image: amrdabour/loadgenerator
+      context: src/loadgenerator
