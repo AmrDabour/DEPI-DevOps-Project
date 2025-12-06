@@ -65,14 +65,6 @@ profiles:
   - op: replace
     path: /build/artifacts/7/docker/dockerfile
     value: Dockerfile.debug
-# The "network-policies" profile is not used by default.
-# You can use it in isolation or in combination with other profiles:
-#     skaffold run -p network-policies, debug
-- name: network-policies
-  patches:
-  - op: add
-    path: /manifests/kustomize/paths/1
-    value: kustomize/components/network-policies
 # "docker-hub" profile for pushing to Docker Hub
 # استخدم هذا للبناء والرفع على Docker Hub
 # الاستخدام: skaffold dev -p docker-hub

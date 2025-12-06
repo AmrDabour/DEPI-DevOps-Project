@@ -81,7 +81,7 @@ jobs:
             To deploy this release to your Kubernetes cluster:
             
             ```bash
-            # Update image tags in your manifests or use kustomize
+            # Update image tags in your manifests
             kubectl set image deployment/frontend frontend=amrdabour/frontend:${{ steps.get_version.outputs.version }}
             # ... repeat for other services
             

@@ -16,18 +16,8 @@ resource "google_redis_instance" "redis-cart" {
   ]
 }
 
-# Edit contents of Memorystore kustomization.yaml file to target new Memorystore (redis) instance
-resource "null_resource" "kustomization-update" {
-  provisioner "local-exec" {
-    interpreter = ["bash", "-exc"]
-    command     = "sed -i \"s/REDIS_CONNECTION_STRING/${google_redis_instance.redis-cart[0].host}:${google_redis_instance.redis-cart[0].port}/g\" ../kustomize/components/memorystore/kustomization.yaml"
-  }
-
-  # count specifies the number of instances to create;
-  # if var.memorystore is true then the resource is enabled
-  count          = var.memorystore ? 1 : 0
-
-  depends_on = [
-    resource.google_redis_instance.redis-cart
-  ]
+# Output the Memorystore connection string for manual configuration
+output "redis_connection_string" {
+  value       = var.memorystore ? "${google_redis_instance.redis-cart[0].host}:${google_redis_instance.redis-cart[0].port}" : null
+  description = "Redis connection string for cart service. Update REDIS_ADDR in kubernetes-manifests/cartservice.yaml"
 }

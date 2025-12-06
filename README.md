@@ -37,7 +37,6 @@ This project demonstrates a complete microservices-based e-commerce platform tha
 - **Kubernetes** for container orchestration
 - **Terraform** for infrastructure as code
 - **Skaffold** for continuous development
-- **Kustomize** for Kubernetes configuration management
 
 ### Key Features
 
@@ -125,7 +124,6 @@ This project demonstrates a complete microservices-based e-commerce platform tha
 - **Kubernetes** - Container orchestration
 - **Docker** - Containerization
 - **Skaffold** - Local development and CI/CD
-- **Kustomize** - Kubernetes configuration management
 - **Terraform** - Infrastructure as Code (GCP)
 - **Istio** - Service mesh (optional)
 
@@ -154,7 +152,6 @@ Before you begin, ensure you have the following installed:
 
 ### Recommended
 - **Skaffold** (v2.0+) - [Install Skaffold](https://skaffold.dev/docs/install/)
-- **Kustomize** (v4.5+) - [Install Kustomize](https://kubectl.docs.kubernetes.io/installation/kustomize/)
 - **Terraform** (v1.0+) - [Install Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli)
 
 ### For Local Development
@@ -352,50 +349,6 @@ gcloud container clusters get-credentials microservices-demo --zone=us-central1-
 kubectl apply -f release/kubernetes-manifests.yaml
 ```
 
-### Using Kustomize Components
-
-Kustomize allows you to customize deployments with various components:
-
-```bash
-# Base deployment
-kubectl apply -k kustomize/base
-
-# With specific components
-kubectl apply -k kustomize/components/memorystore
-kubectl apply -k kustomize/components/service-mesh-istio
-kubectl apply -k kustomize/components/google-cloud-operations
-
-# Custom combination
-cat <<EOF > kustomization.yaml
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-- kustomize/base
-components:
-- kustomize/components/memorystore
-- kustomize/components/google-cloud-operations
-- kustomize/components/network-policies
-EOF
-
-kubectl apply -k .
-```
-
-### Available Kustomize Components
-
-- **alloydb** - Use AlloyDB for database
-- **memorystore** - Use Google Cloud Memorystore for Redis
-- **spanner** - Use Cloud Spanner for database
-- **service-mesh-istio** - Deploy with Istio service mesh
-- **google-cloud-operations** - Enable GCP logging and monitoring
-- **network-policies** - Apply network security policies
-- **shopping-assistant** - Enable AI shopping assistant
-- **cymbal-branding** - Custom branding
-- **non-public-frontend** - Internal-only frontend
-- **without-loadgenerator** - Disable load generator
-- **custom-base-url** - Custom base URL configuration
-- **container-images-registry** - Use custom container registry
-- **container-images-tag** - Use specific image tags
-
 ### GitOps with Argo CD 🚀 NEW!
 
 Deploy and manage your microservices using GitOps principles with Argo CD:
@@ -422,9 +375,8 @@ kubectl apply -f argocd/applications/microservices-app.yaml
 
 **Deployment Strategies:**
 1. **Single App** - All services managed together (recommended for beginners)
-2. **Kustomize-Based** - Environment-specific configurations (recommended for production)
-3. **Individual Services** - Per-service control (advanced)
-4. **App of Apps** - Hierarchical management (enterprise)
+2. **Individual Services** - Per-service control (advanced)
+3. **App of Apps** - Hierarchical management (enterprise)
 
 **📖 Full Documentation:** See [argocd/](argocd/) directory for complete guides:
 - [Quick Start Guide](argocd/QUICK-START.md) - Get started in 5 minutes
@@ -460,9 +412,8 @@ PORT: "7000"
 ### Custom Configuration
 
 1. **Edit Kubernetes manifests** in `kubernetes-manifests/` directory
-2. **Use Kustomize overlays** for environment-specific configurations
-3. **Set environment variables** in deployment YAML files
-4. **Configure resource limits** for each service
+2. **Set environment variables** in deployment YAML files
+3. **Configure resource limits** for each service
 
 ### Image Registry Configuration
 
@@ -472,9 +423,7 @@ To use your own Docker registry:
 # Using Skaffold
 skaffold run --default-repo=your-registry.io/your-project
 
-# Using Kustomize component
-kubectl apply -k kustomize/components/container-images-registry
-# Edit the component to set your registry
+# Or edit image names directly in kubernetes-manifests/*.yaml
 ```
 
 ---
@@ -621,12 +570,9 @@ stern frontend
 
 ### Metrics with Google Cloud Operations
 
-When deployed with the `google-cloud-operations` component:
+To enable Google Cloud Operations for monitoring:
 
 ```bash
-# Deploy with monitoring
-kubectl apply -k kustomize/components/google-cloud-operations
-
 # View in GCP Console:
 # - Cloud Trace for distributed tracing
 # - Cloud Logging for centralized logs
@@ -635,9 +581,11 @@ kubectl apply -k kustomize/components/google-cloud-operations
 
 ### Service Mesh Observability (Istio)
 
+To deploy with Istio service mesh, apply the Istio manifests:
+
 ```bash
-# Deploy with Istio
-kubectl apply -k kustomize/components/service-mesh-istio
+# Deploy Istio manifests
+kubectl apply -f release/istio-manifests.yaml
 
 # Access Kiali dashboard
 istioctl dashboard kiali

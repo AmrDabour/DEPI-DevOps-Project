@@ -23,8 +23,8 @@ variable "namespace" {
 
 variable "filepath_manifest" {
   type        = string
-  description = "Path to DevOps Project's Kubernetes resources, written using Kustomize"
-  default     = "../kustomize/"
+  description = "Path to DevOps Project's Kubernetes resources"
+  default     = "../kubernetes-manifests/"
 }
 
 variable "memorystore" {
