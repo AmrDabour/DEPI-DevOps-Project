@@ -87,7 +87,7 @@ resource "null_resource" "apply_deployment" {
 
   provisioner "local-exec" {
     interpreter = ["PowerShell", "-Command"]
-    command     = "kubectl apply -k ${var.filepath_manifest} -n ${var.namespace}"
+    command     = "kubectl apply -k ${var.filepath_manifest}"
   }
 
   depends_on = [

@@ -12,3 +12,7 @@ resources:
  - productcatalogservice.yaml
  - recommendationservice.yaml
  - shippingservice.yaml
+ - prometheus.yaml
+ - grafana.yaml
+ - argocd.yaml
+ - argocd-image-updater.yaml

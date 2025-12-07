@@ -1,0 +1,72 @@
+# ArgoCD Application Example with Image Updater
+# This file shows how to configure ArgoCD to automatically update images from Docker Hub
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: microservices-demo
+  namespace: argocd
+  annotations:
+    # Enable image updater for this application
+    argocd-image-updater.argoproj.io/image-list: |
+      frontend=amrdabour/frontend,
+      adservice=amrdabour/adservice,
+      cartservice=amrdabour/cartservice,
+      checkoutservice=amrdabour/checkoutservice,
+      currencyservice=amrdabour/currencyservice,
+      emailservice=amrdabour/emailservice,
+      paymentservice=amrdabour/paymentservice,
+      productcatalogservice=amrdabour/productcatalogservice,
+      recommendationservice=amrdabour/recommendationservice,
+      shippingservice=amrdabour/shippingservice,
+      loadgenerator=amrdabour/loadgenerator
+    
+    # Update strategy: latest tag or semver
+    argocd-image-updater.argoproj.io/frontend.update-strategy: latest
+    argocd-image-updater.argoproj.io/adservice.update-strategy: latest
+    argocd-image-updater.argoproj.io/cartservice.update-strategy: latest
+    argocd-image-updater.argoproj.io/checkoutservice.update-strategy: latest
+    argocd-image-updater.argoproj.io/currencyservice.update-strategy: latest
+    argocd-image-updater.argoproj.io/emailservice.update-strategy: latest
+    argocd-image-updater.argoproj.io/paymentservice.update-strategy: latest
+    argocd-image-updater.argoproj.io/productcatalogservice.update-strategy: latest
+    argocd-image-updater.argoproj.io/recommendationservice.update-strategy: latest
+    argocd-image-updater.argoproj.io/shippingservice.update-strategy: latest
+    argocd-image-updater.argoproj.io/loadgenerator.update-strategy: latest
+    
+    # Write back method: git or argocd (git commits changes back to repo)
+    argocd-image-updater.argoproj.io/write-back-method: argocd
+    
+    # Pull secrets (not needed for public images, but included for reference)
+    # argocd-image-updater.argoproj.io/pull-secret: pullsecret:argocd/dockerhub-secret
+spec:
+  project: default
+  
+  source:
+    repoURL: https://github.com/AmrDabour/DEPI-DevOps-Project.git
+    targetRevision: main
+    path: kubernetes-manifests
+  
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: false
+    syncOptions:
+    - CreateNamespace=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
+
+---
+# Alternative: If you want to use semver for version tracking
+# Change update-strategy annotations to:
+# argocd-image-updater.argoproj.io/<image-name>.update-strategy: semver
+# argocd-image-updater.argoproj.io/<image-name>.allow-tags: regexp:^v[0-9]+\.[0-9]+\.[0-9]+$
